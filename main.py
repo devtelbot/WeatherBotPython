@@ -4,9 +4,9 @@ import asyncio
 import logging
 import requests
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import Message
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=config.token)
