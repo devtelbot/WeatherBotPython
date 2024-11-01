@@ -92,9 +92,9 @@ async def language_command(message: Message):
 🇬🇧 Select a language...</b>""", reply_markup=keyboard, parse_mode='html')
 
 @dp.callback_query_handler(lambda c: c.data and c.data.startswith('lang_'))
-async def process_callback_language(callback_query: types.CallbackQuery):
-    user_id = callback_query.from_user.id
-    language = callback_query.data.split('_')[1]
+async def process_callback_language(call):
+    user_id = call.from_user.id
+    language = call.data.split('_')[1]
     user_language[user_id] = language
     
     language_selected = {
@@ -103,12 +103,11 @@ async def process_callback_language(callback_query: types.CallbackQuery):
         "en": "<b>Language changed to English</b> 🇬🇧"
     }
     
-    await bot.answer_callback_query(callback_query.id)
     await bot.send_message(user_id, language_selected[language], parse_mode='html')
     
     time.sleep(3)
     
-    language = user_language.get(message.from_user.id, "uk")
+    language = user_language.get(call.from_user.id, "uk")
     url = '<a href="https://github.com/devtelbot/WeatherBotPython">CODE</a>'
     
     greetings = {
@@ -126,7 +125,7 @@ async def process_callback_language(callback_query: types.CallbackQuery):
 🔗 This bot's source code is available on GitHub</b>: {url}"""
     }
     
-    await message.answer(greetings[language], parse_mode='html')
+    await call.message.answer(greetings[language], parse_mode='html')
 
 @dp.message_handler()
 async def get_weather_text(message: Message):
